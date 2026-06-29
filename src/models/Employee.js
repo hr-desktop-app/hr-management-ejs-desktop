@@ -96,6 +96,11 @@ module.exports = (sequelize, Sequelize) => {
     },
     bankName: {
       type: Sequelize.STRING
+    },
+    branchId: {
+      type: Sequelize.UUID,
+      allowNull: false,
+      comment: 'الفرع الذي ينتمي إليه الموظف'
     }
   }, {
     timestamps: true,
@@ -106,11 +111,15 @@ module.exports = (sequelize, Sequelize) => {
   Employee.associate = (models) => {
     Employee.belongsTo(models.User, { foreignKey: 'userId' });
     Employee.belongsTo(models.Department, { foreignKey: 'departmentId' });
+    Employee.belongsTo(models.Branch, { foreignKey: 'branchId' });
     Employee.hasMany(models.Attendance, { foreignKey: 'employeeId' });
     Employee.hasMany(models.BiometricRecord, { foreignKey: 'employeeId' });
     Employee.hasMany(models.GPSLocation, { foreignKey: 'employeeId' });
     Employee.hasMany(models.Payroll, { foreignKey: 'employeeId' });
+    Employee.hasMany(models.LeaveBalance, { foreignKey: 'employeeId' });
     Employee.hasMany(models.Leave, { foreignKey: 'employeeId' });
+    Employee.hasMany(models.PermissionBalance, { foreignKey: 'employeeId' });
+    Employee.hasMany(models.Permission, { foreignKey: 'employeeId' });
   };
 
   return Employee;

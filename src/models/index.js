@@ -24,6 +24,7 @@ const models = {};
 
 // Import models
 models.User = require('./User')(sequelize, Sequelize);
+models.Branch = require('./Branch')(sequelize, Sequelize);
 models.Employee = require('./Employee')(sequelize, Sequelize);
 models.Department = require('./Department')(sequelize, Sequelize);
 models.Attendance = require('./Attendance')(sequelize, Sequelize);
@@ -31,7 +32,12 @@ models.BiometricRecord = require('./BiometricRecord')(sequelize, Sequelize);
 models.GPSLocation = require('./GPSLocation')(sequelize, Sequelize);
 models.BiometricDevice = require('./BiometricDevice')(sequelize, Sequelize);
 models.Payroll = require('./Payroll')(sequelize, Sequelize);
+models.LeaveType = require('./LeaveType')(sequelize, Sequelize);
+models.LeaveBalance = require('./LeaveBalance')(sequelize, Sequelize);
 models.Leave = require('./Leave')(sequelize, Sequelize);
+models.PermissionType = require('./PermissionType')(sequelize, Sequelize);
+models.PermissionBalance = require('./PermissionBalance')(sequelize, Sequelize);
+models.Permission = require('./Permission')(sequelize, Sequelize);
 models.AuditLog = require('./AuditLog')(sequelize, Sequelize);
 models.DeviceOfficeConfig = require('./DeviceOfficeConfig')(sequelize, Sequelize);
 
