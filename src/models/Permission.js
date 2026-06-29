@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Leave = sequelize.define('Leave', {
+  const Permission = sequelize.define('Permission', {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV4,
@@ -13,29 +13,26 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.UUID,
       allowNull: false
     },
-    leaveTypeId: {
+    permissionTypeId: {
       type: Sequelize.UUID,
       allowNull: false
     },
-    startDate: {
+    permissionDate: {
       type: Sequelize.DATE,
       allowNull: false
     },
-    endDate: {
-      type: Sequelize.DATE,
-      allowNull: false
-    },
-    totalDays: {
-      type: Sequelize.DECIMAL(5, 2),
+    permissionTime: {
+      type: Sequelize.ENUM('morning', 'afternoon'),
       allowNull: false
     },
     reason: {
       type: Sequelize.TEXT,
       allowNull: false
     },
-    documents: {
-      type: Sequelize.JSON,
-      comment: 'مصفوفة من المرفقات'
+    isExtraPermission: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      comment: 'هل هذه أذن إضافية على حساب الموظف'
     },
     status: {
       type: Sequelize.ENUM('pending', 'approved', 'rejected', 'cancelled'),
@@ -44,8 +41,7 @@ module.exports = (sequelize, Sequelize) => {
     // نظام الموافقات
     hrManagerStatus: {
       type: Sequelize.ENUM('pending', 'approved', 'rejected'),
-      defaultValue: 'pending',
-      comment: 'موافقة مسئول شئون العاملين'
+      defaultValue: 'pending'
     },
     hrManagerApprovedAt: {
       type: Sequelize.DATE
@@ -58,8 +54,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     deputyManagerStatus: {
       type: Sequelize.ENUM('pending', 'approved', 'rejected'),
-      defaultValue: 'pending',
-      comment: 'موافقة الوكيل'
+      defaultValue: 'pending'
     },
     deputyManagerApprovedAt: {
       type: Sequelize.DATE
@@ -72,8 +67,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     managerStatus: {
       type: Sequelize.ENUM('pending', 'approved', 'rejected'),
-      defaultValue: 'pending',
-      comment: 'موافقة المدير'
+      defaultValue: 'pending'
     },
     managerApprovedAt: {
       type: Sequelize.DATE
@@ -86,23 +80,18 @@ module.exports = (sequelize, Sequelize) => {
     },
     rejectionReason: {
       type: Sequelize.TEXT
-    },
-    isDeductedFromBalance: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-      comment: 'هل تم خصم الأيام من الرصيد'
     }
   }, {
     timestamps: true,
     underscored: true,
-    tableName: 'leaves'
+    tableName: 'permissions'
   });
 
-  Leave.associate = (models) => {
-    Leave.belongsTo(models.Employee, { foreignKey: 'employeeId' });
-    Leave.belongsTo(models.LeaveType, { foreignKey: 'leaveTypeId' });
-    Leave.belongsTo(models.Branch, { foreignKey: 'branchId' });
+  Permission.associate = (models) => {
+    Permission.belongsTo(models.Employee, { foreignKey: 'employeeId' });
+    Permission.belongsTo(models.PermissionType, { foreignKey: 'permissionTypeId' });
+    Permission.belongsTo(models.Branch, { foreignKey: 'branchId' });
   };
 
-  return Leave;
+  return Permission;
 };
